@@ -27,7 +27,7 @@ object ReleaseTree : Tree() {
         }
 }
 ```
-When planting new Trees there is no need to create new instances of the tree, you simply call `Kimber.plant(ReleseTree)`
+When planting new Trees there is no need to create new instances of the tree, you simply call `Kimber.plant(ReleaseTree)`
 
 ## Whats missing currently
 - Unit Tests
