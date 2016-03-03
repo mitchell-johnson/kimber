@@ -5,124 +5,7 @@ import java.io.PrintWriter
 import java.io.StringWriter
 import java.util.regex.Pattern
 
-object DebugTree : Tree() {
-    private val MAX_LOG_LENGTH = 4000
-    private val CALL_STACK_INDEX = 5
-    private val ANONYMOUS_CLASS = Pattern.compile("(\\$\\d+)+$")
-
-    override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
-        if (message.length < MAX_LOG_LENGTH) {
-            if (priority == Log.ASSERT) {
-                Log.wtf(tag, message)
-            } else {
-                Log.println(priority, tag, message)
-            }
-            return
-        }
-
-        // Split by line, then ensure each line can fit into Log's maximum length.
-        var i = 0
-        val length = message.length
-        while (i < length) {
-            var newline = message.indexOf('\n', i)
-            newline = if (newline != -1) newline else length
-            do {
-                val end = Math.min(newline, i + MAX_LOG_LENGTH)
-                val part = message.substring(i, end)
-                if (priority == Log.ASSERT) {
-                    Log.wtf(tag, part)
-                } else {
-                    Log.println(priority, tag, part)
-                }
-                i = end
-            } while (i < newline)
-            i++
-        }
-    }
-
-
-    override fun getTag(): String {
-        val tag = super.getTag()
-        if (tag != null) {
-            return tag
-        }
-
-        // DO NOT switch this to Thread.getCurrentThread().getStackTrace(). The test will pass
-        // because Robolectric runs them on the JVM but on Android the elements are different.
-        val stackTrace = Throwable().stackTrace
-        if (stackTrace.size <= CALL_STACK_INDEX) {
-            throw IllegalStateException(
-                    "Synthetic stacktrace didn't have enough elements: are you using proguard?")
-        }
-        return createStackElementTag(stackTrace[CALL_STACK_INDEX])
-    }
-
-    /**
-     * Extract the tag which should be used for the message from the `element`. By default
-     * this will use the class name without any anonymous class suffixes (e.g., `Foo$1`
-     * becomes `Foo`).
-     *
-     *
-     * Note: This will not be called if a [manual tag][.tag] was specified.
-     */
-    fun createStackElementTag(element: StackTraceElement): String {
-        var tag = element.className
-        val m = ANONYMOUS_CLASS.matcher(tag)
-        if (m.find()) {
-            tag = m.replaceAll("")
-        }
-        return tag.substring(tag.lastIndexOf('.') + 1)
-    }
-}
-
-val FOREST: MutableList<Tree> = mutableListOf()
-
-/** A {@link Tree} that delegates to all planted trees in the {@linkplain #FOREST forest}. */
-object TREE_OF_SOULS : Tree() {
-
-    override fun v(t: Throwable?, message: String, vararg args: Any) {
-        for (tree in FOREST) {
-            tree.v(t ,message, *args)
-        }
-    }
-
-    override fun d(t: Throwable?, message: String, vararg args: Any) {
-        for (tree in FOREST) {
-            tree.d(t ,message, *args)
-        }
-    }
-
-    override fun i(t: Throwable?, message: String, vararg args: Any) {
-        for (tree in FOREST) {
-            tree.i(t ,message, *args)
-        }
-    }
-
-    override fun w(t: Throwable?, message: String, vararg args: Any) {
-        for (tree in FOREST) {
-            tree.w(t ,message, *args)
-        }
-    }
-
-    override fun e(t: Throwable?, message: String, vararg args: Any) {
-        for (tree in FOREST) {
-            tree.e(t ,message, *args)
-        }
-    }
-
-    override fun wtf(t: Throwable?, message: String, vararg args: Any) {
-        for (tree in FOREST) {
-            tree.wtf(t ,message, *args)
-        }
-    }
-
-    override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
-        for (tree in FOREST) {
-            tree.log(priority, tag, message, t)
-        }
-    }
-}
-
+/** Logging for lazy people who like kotlin. */
 object Kimber {
 
     /** Add a new logging tree.  */
@@ -205,8 +88,56 @@ object Kimber {
     fun wtf(message: String, vararg args: Any) {
         TREE_OF_SOULS.wtf(null, message, args)
     }
-
 }
+
+val FOREST: MutableList<Tree> = mutableListOf()
+
+/** A {@link Tree} that delegates to all planted trees in the {@linkplain #FOREST forest}. */
+object TREE_OF_SOULS : Tree() {
+
+    override fun v(t: Throwable?, message: String, vararg args: Any) {
+        for (tree in FOREST) {
+            tree.v(t ,message, *args)
+        }
+    }
+
+    override fun d(t: Throwable?, message: String, vararg args: Any) {
+        for (tree in FOREST) {
+            tree.d(t ,message, *args)
+        }
+    }
+
+    override fun i(t: Throwable?, message: String, vararg args: Any) {
+        for (tree in FOREST) {
+            tree.i(t ,message, *args)
+        }
+    }
+
+    override fun w(t: Throwable?, message: String, vararg args: Any) {
+        for (tree in FOREST) {
+            tree.w(t ,message, *args)
+        }
+    }
+
+    override fun e(t: Throwable?, message: String, vararg args: Any) {
+        for (tree in FOREST) {
+            tree.e(t ,message, *args)
+        }
+    }
+
+    override fun wtf(t: Throwable?, message: String, vararg args: Any) {
+        for (tree in FOREST) {
+            tree.wtf(t ,message, *args)
+        }
+    }
+
+    override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
+        for (tree in FOREST) {
+            tree.log(priority, tag, message, t)
+        }
+    }
+}
+
 
 /** A facade for handling logging calls. Install instances via {@link #plant Timber.plant()}. */
 abstract class Tree {
@@ -303,13 +234,79 @@ abstract class Tree {
     }
 
     private fun getStackTraceString(t: Throwable): String {
-        // Don't replace this with Log.getStackTraceString() - it hides
-        // UnknownHostException, which is not what we want.
         val sw = StringWriter(256)
         val pw = PrintWriter(sw, false)
         t.printStackTrace(pw)
         pw.flush()
         return sw.toString()
     }
+}
 
+/** A {@link Tree Tree} for debug builds. Automatically infers the tag from the calling class. */
+object DebugTree : Tree() {
+    private val MAX_LOG_LENGTH = 4000
+    private val CALL_STACK_INDEX = 5
+    private val ANONYMOUS_CLASS = Pattern.compile("(\\$\\d+)+$")
+
+    override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
+        if (message.length < MAX_LOG_LENGTH) {
+            if (priority == Log.ASSERT) {
+                Log.wtf(tag, message)
+            } else {
+                Log.println(priority, tag, message)
+            }
+            return
+        }
+
+        // Split by line, then ensure each line can fit into Log's maximum length.
+        var i = 0
+        val length = message.length
+        while (i < length) {
+            var newline = message.indexOf('\n', i)
+            newline = if (newline != -1) newline else length
+            do {
+                val end = Math.min(newline, i + MAX_LOG_LENGTH)
+                val part = message.substring(i, end)
+                if (priority == Log.ASSERT) {
+                    Log.wtf(tag, part)
+                } else {
+                    Log.println(priority, tag, part)
+                }
+                i = end
+            } while (i < newline)
+            i++
+        }
+    }
+
+
+    override fun getTag(): String {
+        val tag = super.getTag()
+        if (tag != null) {
+            return tag
+        }
+        // DO NOT switch this to Thread.getCurrentThread().getStackTrace(). The test will pass
+        // because Robolectric runs them on the JVM but on Android the elements are different.
+        val stackTrace = Throwable().stackTrace
+        if (stackTrace.size <= CALL_STACK_INDEX) {
+            throw IllegalStateException(
+                    "Synthetic stacktrace didn't have enough elements: are you using proguard?")
+        }
+        return createStackElementTag(stackTrace[CALL_STACK_INDEX])
+    }
+
+    /**
+     * Extract the tag which should be used for the message from the `element`. By default
+     * this will use the class name without any anonymous class suffixes (e.g., `Foo$1`
+     * becomes `Foo`).
+     *
+     * Note: This will not be called if a [manual tag][.tag] was specified.
+     */
+    fun createStackElementTag(element: StackTraceElement): String {
+        var tag = element.className
+        val m = ANONYMOUS_CLASS.matcher(tag)
+        if (m.find()) {
+            tag = m.replaceAll("")
+        }
+        return tag.substring(tag.lastIndexOf('.') + 1)
+    }
 }
