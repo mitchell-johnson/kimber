@@ -1,4 +1,4 @@
-# kimber
+# Kimber
 A port of the Android Timber library to Kotlin. All credit goes to [Jake Wharton](https://github.com/JakeWharton) as this has begun as a line for line port of the Java code.
 
 This is a logger with a small, extensible API which provides utility on top of Android's normal Log class.
@@ -13,9 +13,10 @@ Usage
 
 Two easy steps:
 
-Install any Tree instances you want in the onCreate of your application class.
-Call Kimber's static methods everywhere throughout your app.
-Check out the sample app in kimber-sample/ to see it in action.
+1. Install any `Tree` instances you want in the `onCreate` of your application class.
+2. Call Kimber's static methods everywhere throughout your app.
+
+Check out the sample app in `kimber-sample/` to see it in action.
 
 ## Main Differences With [Timber](https://github.com/JakeWharton/timber)
 Trees are created as "Objects" not Classes using the standard Kotlin format.
@@ -31,4 +32,5 @@ When planting new Trees there is no need to create new instances of the tree, yo
 ## Whats missing currently
 - Unit Tests
 - Lint Rules
-- Gradle installation 
+- Gradle installation
+- Any Kotlin black magic that I dont know about
