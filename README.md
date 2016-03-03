@@ -17,6 +17,16 @@ Install any Tree instances you want in the onCreate of your application class.
 Call Kimber's static methods everywhere throughout your app.
 Check out the sample app in kimber-sample/ to see it in action.
 
+## Main Differences With [Timber](https://github.com/JakeWharton/timber)
+Trees are created as "Objects" not Classes using the standard Kotlin format.
+```
+object ReleaseTree : Tree() {
+        override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
+        // Handle Log calls here
+        }
+}
+```
+When planting new Trees there is no need to create new instances of the tree, you simply call `Kimber.plant(ReleseTree)`
 
 ## Whats missing currently
 - Unit Tests
