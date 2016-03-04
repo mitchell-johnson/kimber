@@ -14,7 +14,9 @@ class ExampleApp : Application {
         Kimber.plant(DebugTree)
         Kimber.plant(CrashReportingTree)
 
-        Kimber.v("Verbose message test");
+        var testString = "Some additional text"
+
+        Kimber.v("Verbose message test %s", testString);
         Kimber.v(Throwable(), "Throwable test")
 
         Kimber.d("Debug message test");
