@@ -16,77 +16,42 @@ object Kimber {
             throw NullPointerException("tree == null")
         }
         if (tree === TREE_OF_SOULS) {
-            throw IllegalArgumentException("Cannot plant Timber into itself.")
+            throw IllegalArgumentException("Cannot plant Kimber into itself.")
         }
         synchronized (FOREST) {
             FOREST.add(tree)
         }
     }
 
-    /**
-     * We must duplicate these methods rather than using default arguments because
-     * The first argument cannot be a default argument and we want to conserve the string - format
-     * order/association between the message and the varargs
-     */
-
-    /** Log a verbose exception and a message with optional format args. */
-    fun v(t: Throwable, message: String, vararg args: Any) {
-        TREE_OF_SOULS.v(t, message, args)
+    /** Log a verbose message with optional throwable */
+    fun v(message: String, t: Throwable? = null) {
+        TREE_OF_SOULS.v(t, message)
     }
 
-    /** Log a verbose message with optional format args. */
-    fun v(message: String, vararg args: Any) {
-        TREE_OF_SOULS.v(null, message, args)
+    /** Log a debug message with optional throwable */
+    fun d(message: String, t: Throwable? = null) {
+        TREE_OF_SOULS.d(t, message)
     }
 
-    /** Log a debug exception and a message with optional format args. */
-    fun d(t: Throwable, message: String, vararg args: Any) {
-        TREE_OF_SOULS.d(t, message, args)
+    /** Log a informational message with optional throwable */
+    fun i(message: String, t: Throwable? = null) {
+        TREE_OF_SOULS.i(t, message)
     }
 
-    /** Log a debug message with optional format args. */
-    fun d(message: String, vararg args: Any) {
-        TREE_OF_SOULS.d(null, message, args)
+    /** Log a warning message with optional throwable  */
+    fun w(message: String, t: Throwable? = null) {
+        TREE_OF_SOULS.w(t, message)
     }
 
-    /** Log a debug exception and a message with optional format args. */
-    fun i(t: Throwable, message: String, vararg args: Any) {
-        TREE_OF_SOULS.i(t, message, args)
+    /** Log a error message with optional throwable */
+    fun e(message: String, t: Throwable? = null) {
+        TREE_OF_SOULS.e(t, message)
     }
 
-    /** Log a debug message with optional format args. */
-    fun i(message: String, vararg args: Any) {
-        TREE_OF_SOULS.i(null, message, args)
-    }
 
-    /** Log a debug exception and a message with optional format args. */
-    fun w(t: Throwable, message: String, vararg args: Any) {
-        TREE_OF_SOULS.w(t, message, args)
-    }
-
-    /** Log a debug message with optional format args. */
-    fun w(message: String, vararg args: Any) {
-        TREE_OF_SOULS.w(null, message, args)
-    }
-
-    /** Log a debug exception and a message with optional format args. */
-    fun e(t: Throwable, message: String, vararg args: Any) {
-        TREE_OF_SOULS.e(t, message, args)
-    }
-
-    /** Log a debug message with optional format args. */
-    fun e(message: String, vararg args: Any) {
-        TREE_OF_SOULS.e(null, message, args)
-    }
-
-    /** Log a debug exception and a message with optional format args. */
-    fun wtf(t: Throwable, message: String, vararg args: Any) {
-        TREE_OF_SOULS.wtf(t, message, args)
-    }
-
-    /** Log a debug message with optional format args. */
-    fun wtf(message: String, vararg args: Any) {
-        TREE_OF_SOULS.wtf(null, message, args)
+    /** Log a assert wtf message with optional throwable */
+    fun wtf(message: String, t: Throwable? = null) {
+        TREE_OF_SOULS.wtf(t, message)
     }
 }
 
@@ -95,39 +60,39 @@ val FOREST: MutableList<Tree> = mutableListOf()
 /** A {@link Tree} that delegates to all planted trees in the {@linkplain #FOREST forest}. */
 object TREE_OF_SOULS : Tree() {
 
-    override fun v(t: Throwable?, message: String, vararg args: Any) {
+    override fun v(t: Throwable?, message: String) {
         for (tree in FOREST) {
-            tree.v(t ,message, *args)
+            tree.v(t ,message)
         }
     }
 
-    override fun d(t: Throwable?, message: String, vararg args: Any) {
+    override fun d(t: Throwable?, message: String) {
         for (tree in FOREST) {
-            tree.d(t ,message, *args)
+            tree.d(t ,message)
         }
     }
 
-    override fun i(t: Throwable?, message: String, vararg args: Any) {
+    override fun i(t: Throwable?, message: String) {
         for (tree in FOREST) {
-            tree.i(t ,message, *args)
+            tree.i(t ,message)
         }
     }
 
-    override fun w(t: Throwable?, message: String, vararg args: Any) {
+    override fun w(t: Throwable?, message: String) {
         for (tree in FOREST) {
-            tree.w(t ,message, *args)
+            tree.w(t ,message)
         }
     }
 
-    override fun e(t: Throwable?, message: String, vararg args: Any) {
+    override fun e(t: Throwable?, message: String) {
         for (tree in FOREST) {
-            tree.e(t ,message, *args)
+            tree.e(t ,message)
         }
     }
 
-    override fun wtf(t: Throwable?, message: String, vararg args: Any) {
+    override fun wtf(t: Throwable?, message: String) {
         for (tree in FOREST) {
-            tree.wtf(t ,message, *args)
+            tree.wtf(t ,message)
         }
     }
 
@@ -155,39 +120,39 @@ abstract class Tree {
         return tag
     }
 
-    /** Log an optional verbose exception and a message with optional format args.  */
-    open fun v( t: Throwable? = null, message: String, vararg args: Any) {
-        prepareLog(Log.VERBOSE, t, message, *args)
+    /** Log an optional verbose  */
+    open fun v( t: Throwable? = null, message: String) {
+        prepareLog(Log.VERBOSE, t, message)
     }
 
-    /** Log an optional debug exception and a message with optional format args.  */
-    open fun d( t: Throwable? = null, message: String, vararg args: Any) {
-        prepareLog(Log.DEBUG, t, message, *args)
+    /** Log an optional debug  */
+    open fun d( t: Throwable? = null, message: String) {
+        prepareLog(Log.DEBUG, t, message)
     }
 
-    /** Log an optional info exception and a message with optional format args.  */
-    open fun i( t: Throwable? = null, message: String, vararg args: Any) {
-        prepareLog(Log.INFO, t, message, *args)
+    /** Log an optional info  */
+    open fun i( t: Throwable? = null, message: String) {
+        prepareLog(Log.INFO, t, message)
     }
 
-    /** Log an optional warning exception and a message with optional format args.  */
-    open fun w( t: Throwable? = null, message: String, vararg args: Any) {
-        prepareLog(Log.WARN, t, message, *args)
+    /** Log an optional warning  */
+    open fun w( t: Throwable? = null, message: String) {
+        prepareLog(Log.WARN, t, message)
     }
 
-    /** Log an optional error exception and a message with optional format args.  */
-    open fun e( t: Throwable? = null, message: String, vararg args: Any) {
-        prepareLog(Log.ERROR, t, message, *args)
+    /** Log an optional error  */
+    open fun e( t: Throwable? = null, message: String) {
+        prepareLog(Log.ERROR, t, message)
     }
 
-    /** Log an optional assert exception and a message with optional format args.  */
-    open fun wtf( t: Throwable? = null, message: String, vararg args: Any) {
-        prepareLog(Log.ASSERT, t, message, *args)
+    /** Log an optional assert  */
+    open fun wtf( t: Throwable? = null, message: String) {
+        prepareLog(Log.ASSERT, t, message)
     }
 
-    /** Log at `priority` an exception and a message with optional format args.  */
-    fun log(priority: Int, t: Throwable, message: String, vararg args: Any) {
-        prepareLog(priority, t, message, *args)
+    /** Log at `priority` an  */
+    fun log(priority: Int, t: Throwable, message: String) {
+        prepareLog(priority, t, message)
     }
 
     /**
@@ -208,7 +173,7 @@ abstract class Tree {
         return true
     }
 
-    fun prepareLog(priority: Int, t: Throwable?, message: String, vararg args: Any) {
+    fun prepareLog(priority: Int, t: Throwable?, message: String) {
         var outputMessage:String = message;
         if (!isLoggable(priority)) {
             return
@@ -220,10 +185,6 @@ abstract class Tree {
             }
             outputMessage = getStackTraceString(t)
         } else {
-            if (args.size > 0) {
-                var test = outputMessage.format(args)
-                Log.v("TAG","verbose otuput = " + test)
-            }
             if (t != null) {
                 outputMessage += "\n" + getStackTraceString(t)
             }

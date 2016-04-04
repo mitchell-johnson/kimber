@@ -17,8 +17,9 @@ class DemoActivity : AppCompatActivity() {
         var testString:String = "Some additional text"
         var testInt:Int = 4;
 
-        Kimber.v("Verbose message test %s", testString);
-//        Kimber.v("Verbose message test 2 %d", testInt);
-        Kimber.v("Verbose message test 3 = " + testString);
+        Kimber.v("Verbose message test ${testString}");
+        Kimber.v("Verbose message test 3 = " + testString, Throwable("Some Throwable message"));
+
+        Kimber.d("Debug message test without throwable")
     }
 }
