@@ -29,8 +29,21 @@ object ReleaseTree : Tree() {
 ```
 When planting new Trees there is no need to create new instances of the tree, you simply call `Kimber.plant(ReleaseTree)`
 
+## Installation
+Kimber is currently hosted on jCenter. Add the following to your gradle:
+`compile 'com.mvlabs:kimber:0.5'`
+
+Please make sure that you have added jCenter to your list of repositories eg:
+```
+repositories {
+    mavenCentral()
+    jcenter()
+}
+```
+
+
 ## Whats missing currently
 - Unit Tests
 - Lint Rules
-- Gradle installation
+- Maven Central installation
 - Any Kotlin black magic that I dont know about
