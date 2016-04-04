@@ -8,8 +8,8 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 2
-        versionName "0.1"
+        versionCode 3
+        versionName "0.4"
     }
     buildTypes {
         release {
@@ -22,6 +22,8 @@ android {
     }
 }
 
+apply plugin: 'com.novoda.bintray-release'
+
 dependencies {
     compile 'com.android.support:appcompat-v7:23.+'
     compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -32,11 +34,25 @@ buildscript {
     ext.kotlin_version = '1.0.0'
     repositories {
         mavenCentral()
+        jcenter()
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.novoda:bintray-release:0.3.4'
     }
 }
 repositories {
     mavenCentral()
+    jcenter()
+}
+
+
+publish {
+//    repoName = 'kimber'
+//    userOrg = 'mvlabs'
+    groupId = 'com.mvlabs'
+    artifactId = 'kimber'
+    version = '0.4'
+    description = 'The Kimber Library'
+    website = 'https://github.com/mitchell-johnson/kimber'
 }

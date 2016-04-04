@@ -208,29 +208,28 @@ abstract class Tree {
         return true
     }
 
-    internal fun prepareLog(priority: Int, t: Throwable?, message: String?, vararg args: Any) {
-        var message = message
+    fun prepareLog(priority: Int, t: Throwable?, message: String, vararg args: Any) {
+        var outputMessage:String = message;
         if (!isLoggable(priority)) {
             return
         }
-        if (message != null && message.length == 0) {
-            message = null
-        }
-        if (message == null) {
+
+        if (outputMessage.length == 0) {
             if (t == null) {
-                return  // Swallow message if it's null and there's no throwable.
+                return  // Swallow message if it's empty and there's no throwable.
             }
-            message = getStackTraceString(t)
+            outputMessage = getStackTraceString(t)
         } else {
             if (args.size > 0) {
-                message = String.format(message, *args)
+                var test = outputMessage.format(args)
+                Log.v("TAG","verbose otuput = " + test)
             }
             if (t != null) {
-                message += "\n" + getStackTraceString(t)
+                outputMessage += "\n" + getStackTraceString(t)
             }
         }
 
-        log(priority, getTag(), message, t)
+        log(priority, getTag(), outputMessage, t)
     }
 
     private fun getStackTraceString(t: Throwable): String {

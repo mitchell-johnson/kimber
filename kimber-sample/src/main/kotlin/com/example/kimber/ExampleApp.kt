@@ -14,25 +14,23 @@ class ExampleApp : Application {
         Kimber.plant(DebugTree)
         Kimber.plant(CrashReportingTree)
 
-        var testString = "Some additional text"
 
-        Kimber.v("Verbose message test %s", testString);
-        Kimber.v(Throwable(), "Throwable test")
+//        Kimber.v(Throwable(), "Throwable test")
 
-        Kimber.d("Debug message test");
-        Kimber.d(Throwable(), "Throwable test")
-
-        Kimber.i("Info message test");
-        Kimber.i(Throwable(), "Throwable test")
-
-        Kimber.w("Warning message test");
-        Kimber.w(Throwable(), "Throwable test")
-
-        Kimber.e("Error message test");
-        Kimber.e(Throwable(), "Throwable test")
-
-        Kimber.wtf("Assert message test");
-        Kimber.wtf(Throwable(), "Throwable test")
+//        Kimber.d("Debug message test");
+//        Kimber.d(Throwable(), "Throwable test")
+//
+//        Kimber.i("Info message test");
+//        Kimber.i(Throwable(), "Throwable test")
+//
+//        Kimber.w("Warning message test");
+//        Kimber.w(Throwable(), "Throwable test")
+//
+//        Kimber.e("Error message test");
+//        Kimber.e(Throwable(), "Throwable test")
+//
+//        Kimber.wtf("Assert message test");
+//        Kimber.wtf(Throwable(), "Throwable test")
 
     }
 
