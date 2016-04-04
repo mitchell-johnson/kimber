@@ -7,7 +7,7 @@ Behavior is added through Tree instances. You can install an instance by calling
 
 The included DebugTree implementation will automatically figure out from which class it's being called and use that class name as its tag. Since the tags vary, it works really well when coupled with a log reader like Pidcat.
 
-There are no Tree implementations installed by default because every time you log in production, a puppy dies.
+There are no Tree implementations installed by default because every time you log in production, a kotlin flavored puppy dies.
 
 Usage
 
