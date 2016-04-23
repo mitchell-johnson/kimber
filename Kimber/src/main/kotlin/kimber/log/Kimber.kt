@@ -24,6 +24,30 @@ object Kimber {
         }
     }
 
+    /** Remove a planted tree. */
+    fun uproot(tree: Tree?) {
+        synchronized (FOREST) {
+            if (!FOREST.remove(tree)) {
+                throw IllegalArgumentException("Cannot uproot tree which is not planted: " + tree);
+            }
+        }
+    }
+
+    /** Remove all planted trees. */
+    fun uprootAll() {
+        synchronized (FOREST) {
+            FOREST.clear();
+        }
+    }
+
+    /**
+     * A view into Timber's planted trees as a tree itself. This can be used for injecting a logger
+     * instance rather than using static methods or to facilitate testing.
+     */
+    fun asTree(): Tree {
+        return TREE_OF_SOULS;
+    }
+
     /**
      * We must duplicate these methods rather than using default arguments because
      * The first argument cannot be a default argument and we want to conserve the string - format
@@ -98,37 +122,37 @@ object TREE_OF_SOULS : Tree() {
 
     override fun v(t: Throwable?, message: String, vararg args: Any) {
         for (tree in FOREST) {
-            tree.v(t ,message, *args)
+            tree.v(t, message, *args)
         }
     }
 
     override fun d(t: Throwable?, message: String, vararg args: Any) {
         for (tree in FOREST) {
-            tree.d(t ,message, *args)
+            tree.d(t, message, *args)
         }
     }
 
     override fun i(t: Throwable?, message: String, vararg args: Any) {
         for (tree in FOREST) {
-            tree.i(t ,message, *args)
+            tree.i(t, message, *args)
         }
     }
 
     override fun w(t: Throwable?, message: String, vararg args: Any) {
         for (tree in FOREST) {
-            tree.w(t ,message, *args)
+            tree.w(t, message, *args)
         }
     }
 
     override fun e(t: Throwable?, message: String, vararg args: Any) {
         for (tree in FOREST) {
-            tree.e(t ,message, *args)
+            tree.e(t, message, *args)
         }
     }
 
     override fun wtf(t: Throwable?, message: String, vararg args: Any) {
         for (tree in FOREST) {
-            tree.wtf(t ,message, *args)
+            tree.wtf(t, message, *args)
         }
     }
 
@@ -157,32 +181,32 @@ abstract class Tree {
     }
 
     /** Log an optional verbose exception and a message with optional format args.  */
-    open fun v( t: Throwable? = null, message: String, vararg args: Any) {
+    open fun v(t: Throwable? = null, message: String, vararg args: Any) {
         prepareLog(Log.VERBOSE, t, message, *args)
     }
 
     /** Log an optional debug exception and a message with optional format args.  */
-    open fun d( t: Throwable? = null, message: String, vararg args: Any) {
+    open fun d(t: Throwable? = null, message: String, vararg args: Any) {
         prepareLog(Log.DEBUG, t, message, *args)
     }
 
     /** Log an optional info exception and a message with optional format args.  */
-    open fun i( t: Throwable? = null, message: String, vararg args: Any) {
+    open fun i(t: Throwable? = null, message: String, vararg args: Any) {
         prepareLog(Log.INFO, t, message, *args)
     }
 
     /** Log an optional warning exception and a message with optional format args.  */
-    open fun w( t: Throwable? = null, message: String, vararg args: Any) {
+    open fun w(t: Throwable? = null, message: String, vararg args: Any) {
         prepareLog(Log.WARN, t, message, *args)
     }
 
     /** Log an optional error exception and a message with optional format args.  */
-    open fun e( t: Throwable? = null, message: String, vararg args: Any) {
+    open fun e(t: Throwable? = null, message: String, vararg args: Any) {
         prepareLog(Log.ERROR, t, message, *args)
     }
 
     /** Log an optional assert exception and a message with optional format args.  */
-    open fun wtf( t: Throwable? = null, message: String, vararg args: Any) {
+    open fun wtf(t: Throwable? = null, message: String, vararg args: Any) {
         prepareLog(Log.ASSERT, t, message, *args)
     }
 
@@ -210,7 +234,7 @@ abstract class Tree {
     }
 
     fun prepareLog(priority: Int, t: Throwable?, message: String, vararg args: Any) {
-        var outputMessage:String = message;
+        var outputMessage: String = message;
         if (!isLoggable(priority)) {
             return
         }
@@ -226,7 +250,10 @@ abstract class Tree {
                     outputMessage = outputMessage.format(*args)
                 } catch (e: UnknownFormatConversionException) {
                     outputMessage = "Number format conversion error, please check the supplied" +
-                            "variable types match the format strings"
+                            " variable types match the format strings"
+                } catch (e: IllegalFormatConversionException) {
+                    outputMessage = "Number format conversion error, please check the supplied" +
+                            " variable types match the format strings"
                 }
             }
             if (t != null) {
@@ -247,7 +274,7 @@ abstract class Tree {
 }
 
 /** A {@link Tree Tree} for debug builds. Automatically infers the tag from the calling class. */
-object DebugTree : Tree() {
+open class DebugTree : Tree() {
     private val MAX_LOG_LENGTH = 4000
     private val CALL_STACK_INDEX = 5
     private val ANONYMOUS_CLASS = Pattern.compile("(\\$\\d+)+$")
@@ -305,7 +332,7 @@ object DebugTree : Tree() {
      *
      * Note: This will not be called if a [manual tag][.tag] was specified.
      */
-    fun createStackElementTag(element: StackTraceElement): String {
+    open fun createStackElementTag(element: StackTraceElement): String {
         var tag = element.className
         val m = ANONYMOUS_CLASS.matcher(tag)
         if (m.find()) {

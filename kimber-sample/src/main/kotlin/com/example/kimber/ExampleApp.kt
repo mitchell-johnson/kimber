@@ -11,7 +11,7 @@ class ExampleApp : Application {
 
     override fun onCreate() {
         super.onCreate()
-        Kimber.plant(DebugTree)
+        Kimber.plant(DebugTree())
         Kimber.plant(CrashReportingTree)
 
     }

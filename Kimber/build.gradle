@@ -2,14 +2,14 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 6
-        versionName "0.6"
+        versionCode rootProject.ext.appVersionCode
+        versionName rootProject.ext.appVersion
     }
     buildTypes {
         release {
@@ -27,8 +27,12 @@ apply plugin: 'com.novoda.bintray-release'
 dependencies {
     compile 'com.android.support:appcompat-v7:23.+'
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+    testCompile deps.festandroid
+    testCompile deps.festassert
+    testCompile deps.junit
+    testCompile deps.robolectric
 }
 buildscript {
     ext.kotlin_version = '1.0.0'
@@ -52,7 +56,7 @@ publish {
 //    userOrg = 'mvlabs'
     groupId = 'com.mvlabs'
     artifactId = 'kimber'
-    version = '0.6'
+    version = rootProject.ext.appVersion
     description = 'The Kimber Library'
     website = 'https://github.com/mitchell-johnson/kimber'
 }
