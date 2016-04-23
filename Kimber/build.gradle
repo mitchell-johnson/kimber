@@ -8,8 +8,8 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 5
-        versionName "0.5"
+        versionCode 6
+        versionName "0.6"
     }
     buildTypes {
         release {
@@ -52,7 +52,7 @@ publish {
 //    userOrg = 'mvlabs'
     groupId = 'com.mvlabs'
     artifactId = 'kimber'
-    version = '0.5'
+    version = '0.6'
     description = 'The Kimber Library'
     website = 'https://github.com/mitchell-johnson/kimber'
 }

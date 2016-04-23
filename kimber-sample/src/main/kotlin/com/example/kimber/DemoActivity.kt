@@ -19,10 +19,10 @@ class DemoActivity : AppCompatActivity() {
         Kimber.v("Verbose message test ${testString}");
         Kimber.v("Verbose message test 3 = " + testString, Throwable("Some Throwable message"));
 
-        Kimber.d("Debug message test");
+        Kimber.d("Debug message test with number %d", 2.0);
         Kimber.d("Debug Throwable test", Throwable())
 
-        Kimber.i("Info message test");
+        Kimber.i("Info message test with String %s", testString);
         Kimber.i("Info Throwable test", Throwable())
 
         Kimber.w("Warning message test");
