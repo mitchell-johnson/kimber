@@ -149,7 +149,7 @@ object Kimber {
 
     /** Log a debug message with optional format args. */
     fun log(priority: Int, message: String, vararg args: Any) {
-        TREE_OF_SOULS.log(priority, null, message, *args)
+        TREE_OF_SOULS.log(priority = priority, t = null,message = message,args = *args)
     }
 }
 
@@ -189,6 +189,12 @@ object TREE_OF_SOULS : Tree() {
     override fun wtf(t: Throwable?, message: String, vararg args: Any) {
         for (tree in FOREST) {
             tree.wtf(t, message, *args)
+        }
+    }
+
+    override fun log(priority: Int, t: Throwable?, message: String, vararg args: Any) {
+        for (tree in FOREST) {
+            tree.log(priority, t = null, message = message, args = *args)
         }
     }
 
@@ -247,7 +253,7 @@ abstract class Tree {
     }
 
     /** Log at `priority` an exception and a message with optional format args.  */
-    fun log(priority: Int, t: Throwable?, message: String, vararg args: Any) {
+    open fun log(priority: Int, t: Throwable?, message: String, vararg args: Any) {
         prepareLog(priority, t, message, *args)
     }
 
