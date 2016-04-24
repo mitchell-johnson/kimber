@@ -6,6 +6,8 @@ import java.io.StringWriter
 import java.util.*
 import java.util.regex.Pattern
 
+val FOREST: MutableList<Tree> = mutableListOf()
+
 /** Logging for lazy people who like kotlin. */
 object Kimber {
 
@@ -17,7 +19,7 @@ object Kimber {
             throw NullPointerException("tree == null")
         }
         if (tree === TREE_OF_SOULS) {
-            throw IllegalArgumentException("Cannot plant Timber into itself.")
+            throw IllegalArgumentException("Cannot plant Kimber into itself.")
         }
         synchronized (FOREST) {
             FOREST.add(tree)
@@ -41,10 +43,36 @@ object Kimber {
     }
 
     /**
-     * A view into Timber's planted trees as a tree itself. This can be used for injecting a logger
+     * A view into Kimber's planted trees as a tree itself. This can be used for injecting a logger
      * instance rather than using static methods or to facilitate testing.
      */
     fun asTree(): Tree {
+        return TREE_OF_SOULS;
+    }
+
+    /***
+     * Get the number of planted Trees.
+     */
+    fun treeCount(): Int {
+        synchronized (FOREST) {
+            return FOREST.size
+        }
+    }
+
+    /** Return a copy of all planted {@linkplain Tree trees}. */
+    fun forest(): List<Tree> {
+        synchronized (FOREST) {
+            return FOREST.filterNotNull();
+        }
+    }
+
+    /** Set a one-time tag for use on the next logging call. */
+    fun tag(tag: String): Tree {
+        var forest = FOREST.toTypedArray();
+        //noinspection ForLoopReplaceableByForEach
+        for (item in forest) {
+            item.explicitTag.set(tag);
+        }
         return TREE_OF_SOULS;
     }
 
@@ -113,9 +141,17 @@ object Kimber {
     fun wtf(message: String, vararg args: Any) {
         TREE_OF_SOULS.wtf(null, message, *args)
     }
-}
 
-val FOREST: MutableList<Tree> = mutableListOf()
+    /** Log a debug exception and a message with optional format args. */
+    fun log(priority: Int, t: Throwable, message: String, vararg args: Any) {
+        TREE_OF_SOULS.log(priority, t, message, *args)
+    }
+
+    /** Log a debug message with optional format args. */
+    fun log(priority: Int, message: String, vararg args: Any) {
+        TREE_OF_SOULS.log(priority, null, message, *args)
+    }
+}
 
 /** A {@link Tree} that delegates to all planted trees in the {@linkplain #FOREST forest}. */
 object TREE_OF_SOULS : Tree() {
@@ -164,7 +200,7 @@ object TREE_OF_SOULS : Tree() {
 }
 
 
-/** A facade for handling logging calls. Install instances via {@link #plant Timber.plant()}. */
+/** A facade for handling logging calls. Install instances via {@link #plant Kimber.plant()}. */
 abstract class Tree {
     internal val explicitTag = ThreadLocal<String>()
 
@@ -211,7 +247,7 @@ abstract class Tree {
     }
 
     /** Log at `priority` an exception and a message with optional format args.  */
-    fun log(priority: Int, t: Throwable, message: String, vararg args: Any) {
+    fun log(priority: Int, t: Throwable?, message: String, vararg args: Any) {
         prepareLog(priority, t, message, *args)
     }
 
@@ -229,7 +265,7 @@ abstract class Tree {
     abstract fun log(priority: Int, tag: String?, message: String, t: Throwable?)
 
     /** Return whether a message at `priority` should be logged.  */
-    protected fun isLoggable(priority: Int): Boolean {
+    open fun isLoggable(priority: Int): Boolean {
         return true
     }
 
