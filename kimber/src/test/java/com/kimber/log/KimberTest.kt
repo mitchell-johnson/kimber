@@ -296,13 +296,19 @@ class KimberTest {
 
     fun assertExceptionLogged(message: String, exceptionClassname: String, tag: String? = null) {
         var logs: List<LogItem> = ShadowLog.getLogs()
-        assertThat(logs).hasSize(1)
+        //if the log we posted here was longer than the max log length then this will fail. So we want to re-combine
+        //all logs into one.
+        var testLogs: String = "";
+        for(item in logs) {
+            testLogs = testLogs.plus(item.msg)
+        }
+//        assertThat(logs).hasSize(1)
         var log = logs[0]
         assertThat(log.type).isEqualTo(Log.ERROR)
         var tagString: String = tag ?: "KimberTest"
         assertThat(log.tag).isEqualTo(tagString)
-        assertThat(log.msg).startsWith(message)
-        assertThat(log.msg).contains(exceptionClassname)
+        assertThat(testLogs).startsWith(message)
+        assertThat(testLogs).contains(exceptionClassname)
         // We use a low-level primitive that Robolectric doesn't populate.
         assertThat(log.throwable).isNull()
     }
