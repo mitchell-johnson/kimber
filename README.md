@@ -43,7 +43,6 @@ repositories {
 
 
 ## Whats missing currently
-- Unit Tests
 - Lint Rules
 - Maven Central installation
 - Any Kotlin black magic that I dont know about
