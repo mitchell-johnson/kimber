@@ -1,3 +1,4 @@
+[](https://jitpack.io/v/mitchell-johnson/kimber.svg)](https://jitpack.io/#mitchell-johnson/kimber)
 # Kimber
 A port of the Android Timber library to Kotlin. All credit goes to [Jake Wharton](https://github.com/JakeWharton) as this has begun as a line for line port of the Java code.
 
@@ -29,17 +30,25 @@ object ReleaseTree : Tree() {
 ```
 When planting new Trees there is no need to create new instances of the tree, you simply call `Kimber.plant(ReleaseTree)`
 
-## Installation
-Kimber is currently hosted on jCenter. Add the following to your gradle:
-`compile 'com.mvlabs:kimber:0.5'`
+Please make sure that you have added jitpack to your root bulid.gradle eg:
+```
+allprojects {
+		repositories {
+			...
+			maven { url "https://jitpack.io" }
+		}
+	}
+```
 
-Please make sure that you have added jCenter to your list of repositories eg:
+## Installation
+Kimber is currently hosted on jitpack. Add the following to your app gradle:
 ```
-repositories {
-    mavenCentral()
-    jcenter()
-}
+dependencies {
+	        compile 'com.github.mitchell-johnson:kimber:0.5'
+	}
 ```
+
+
 
 
 ## Whats missing currently
