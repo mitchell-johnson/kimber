@@ -1,4 +1,5 @@
-[](https://jitpack.io/v/mitchell-johnson/kimber.svg)](https://jitpack.io/#mitchell-johnson/kimber)
+[![](https://jitpack.io/v/mitchell-johnson/kimber.svg)](https://jitpack.io/#mitchell-johnson/kimber)
+
 # Kimber
 A port of the Android Timber library to Kotlin. All credit goes to [Jake Wharton](https://github.com/JakeWharton) as this has begun as a line for line port of the Java code.
 
