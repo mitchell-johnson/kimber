@@ -9,20 +9,20 @@ import kimber.log.Tree
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.Robolectric
-import org.robolectric.RobolectricGradleTestRunner
 import org.robolectric.annotation.Config
 
 import org.fest.assertions.api.Assertions.assertThat
 import org.junit.After
 import org.junit.Assert.fail
 import org.junit.Before
+import org.robolectric.RobolectricTestRunner
 import org.robolectric.shadows.ShadowLog
 import org.robolectric.shadows.ShadowLog.LogItem
 import java.net.UnknownHostException
 import java.util.concurrent.CountDownLatch
 import kotlin.concurrent.thread
 
-@RunWith(RobolectricGradleTestRunner::class)
+@RunWith(RobolectricTestRunner::class)
 @Config(constants = BuildConfig::class)
 class KimberTest {
 

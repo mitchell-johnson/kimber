@@ -7,7 +7,7 @@ android {
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 23
+        targetSdkVersion 25
         versionCode rootProject.ext.appVersionCode
         versionName rootProject.ext.appVersion
     }
@@ -20,36 +20,21 @@ android {
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
+
 }
 
 apply plugin: 'com.novoda.bintray-release'
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:23.+'
+    compile 'com.android.support:appcompat-v7:25.4.0'
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
-    testCompile deps.festandroid
-    testCompile deps.festassert
-    testCompile deps.junit
-    testCompile deps.robolectric
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.easytesting:fest-assert-core:2.0M10'
+    testCompile 'org.mockito:mockito-core:1.10.19'
+    testCompile 'org.robolectric:robolectric:3.3.2'
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 }
-buildscript {
-    ext.kotlin_version = '1.0.0'
-    repositories {
-        mavenCentral()
-        jcenter()
-    }
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'com.novoda:bintray-release:0.3.4'
-    }
-}
-repositories {
-    mavenCentral()
-    jcenter()
-}
-
 
 publish {
 //    repoName = 'kimber'
@@ -59,4 +44,11 @@ publish {
     version = rootProject.ext.appVersion
     description = 'The Kimber Library'
     website = 'https://github.com/mitchell-johnson/kimber'
+}
+repositories {
+    mavenCentral()
+}
+
+tasks.withType(Javadoc).all {
+    enabled = false
 }
