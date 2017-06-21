@@ -45,7 +45,7 @@ allprojects {
 Kimber is currently hosted on jitpack. Add the following to your app gradle:
 ```
 dependencies {
-	        compile 'com.github.mitchell-johnson:kimber:0.5'
+	        compile 'com.github.mitchell-johnson:kimber:0.7'
 	}
 ```
 
