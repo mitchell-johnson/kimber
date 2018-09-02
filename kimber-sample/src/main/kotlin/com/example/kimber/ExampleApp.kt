@@ -6,8 +6,7 @@ import kimber.log.DebugTree
 import kimber.log.Kimber
 import kimber.log.Tree
 
-class ExampleApp : Application {
-    constructor() : super()
+class ExampleApp() : Application() {
 
     override fun onCreate() {
         super.onCreate()
