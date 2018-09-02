@@ -7,7 +7,7 @@ android {
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode rootProject.ext.appVersionCode
         versionName rootProject.ext.appVersion
     }
@@ -23,7 +23,7 @@ android {
 
 }
 
-apply plugin: 'com.novoda.bintray-release'
+apply plugin: guru.stefma.bintrayrelease.ReleasePlugin
 
 dependencies {
     implementation 'com.android.support:appcompat-v7:27.1.1'
@@ -33,16 +33,14 @@ dependencies {
     testImplementation 'org.easytesting:fest-assert-core:2.0M10'
     testImplementation 'org.mockito:mockito-core:2.19.0'
     testImplementation 'org.robolectric:robolectric:3.3.2'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
 publish {
-//    repoName = 'kimber'
-//    userOrg = 'mvlabs'
-    groupId = 'com.mvlabs'
+    userOrg = 'mvlabs'
     artifactId = 'kimber'
     version = rootProject.ext.appVersion
-    description = 'The Kimber Library'
+    desc = 'The Kimber Library'
     website = 'https://github.com/mitchell-johnson/kimber'
 }
 repositories {
